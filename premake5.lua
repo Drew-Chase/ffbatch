@@ -18,6 +18,10 @@ project (name)
     location (name)
     kind "ConsoleApp"
     language "C++"
+    cppdialect "C++20"
+    cdialect "C17"
+    characterset "Unicode"
+
 
     filter "configurations:Example"
         defines { "EXAMPLE" }
