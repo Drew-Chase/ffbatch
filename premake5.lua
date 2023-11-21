@@ -21,7 +21,8 @@ project (name)
 
     filter "configurations:Example"
         defines { "EXAMPLE" }
-        targetdir "bin/Example/%{cfg.buildcfg}%"
+        targetdir "bin/Example/"
+        objdir "bin/obj/example"
         staticruntime "Off"
 
     filter "configurations:Dynamic Library"
@@ -29,6 +30,7 @@ project (name)
         defines { "DYNAMIC_LIBRARY" }
         targetdir "bin/build/bin"
         staticruntime "Off"
+        objdir "bin/obj/dll"
         
     filter "configurations:Static Library Debug"
         kind "StaticLib"
@@ -37,6 +39,7 @@ project (name)
         targetextension "-d.lib"
         targetdir "bin/build/lib"
         staticruntime "On"
+        objdir "bin/obj/lib-d"
         
     filter "configurations:Static Library"
         kind "StaticLib"
@@ -44,6 +47,7 @@ project (name)
         staticruntime "On"
         targetextension ".lib"
         targetdir "bin/build/lib"
+        objdir "bin/obj/lib"
 
     filter "platforms:Win32"
         architecture "x86"
@@ -54,4 +58,4 @@ project (name)
     filter {} -- reset filter
 
     includedirs { name .. "/includes" }
-    files { "**/.rc", "**/.h", "**/.cpp" }
+    files { "**/*.rc", "**/*.h", "**/*.cpp" }
