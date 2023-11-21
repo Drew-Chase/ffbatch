@@ -6,8 +6,6 @@ os.execute("mkdir " .. name)
 os.execute("mkdir \"" .. directory .. "/" .. name .. "/includes\"")
 os.execute("mkdir \"" .. directory .. "/" .. name .. "/src\"")
 os.execute("mkdir " .. "vendor")
-os.execute("mkdir " .. "scripts")
-os.execute("mv main.cpp " .. name .. "/src/main.cpp")
 
 
 workspace (name)
@@ -21,13 +19,6 @@ project (name)
     cppdialect "C++20"
     cdialect "C17"
     characterset "Unicode"
-
-
-    filter "configurations:Example"
-        defines { "EXAMPLE" }
-        targetdir "bin/Example/"
-        objdir "bin/obj/example"
-        staticruntime "Off"
 
     filter "configurations:Dynamic Library"
         kind "SharedLib"
@@ -61,5 +52,23 @@ project (name)
 
     filter {} -- reset filter
 
-    includedirs { name .. "/includes" }
-    files { "**/*.rc", "**/*.h", "**/*.cpp" }
+    includedirs { name .. "/includes", "include" } -- Add "include" directory
+    files { name .. "**/*.rc", name .. "**/*.h", name .. "**/*.cpp", "src/**.h", "src/**.cpp" } -- Add "src" directory
+
+project "example"
+    location "example"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+    cdialect "C17"
+    links { name }
+
+    characterset "Unicode"
+    filter "configurations:Example"
+        defines { "EXAMPLE" }
+        targetdir "bin/Example/"
+        objdir "bin/obj/example"
+        staticruntime "Off"
+        
+    filter {} -- reset filter
+    files { "example/**/*.rc", "example/**/*.h", "example/**/*.cpp" }
