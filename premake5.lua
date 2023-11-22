@@ -24,30 +24,28 @@ project (name)
     filter "configurations:Example"
         kind "StaticLib"
         defines { "STATIC_LIBRARY_DEBUG" }
-        symbols "Off"
         targetextension "-d.lib"
         targetdir "bin/example/lib"
-        symbolspath "bin/example/lib/symbols"
         staticruntime "On"
         objdir "bin/obj/example-d"
+        symbols "Off"
 
     filter "configurations:Dynamic Library"
         kind "SharedLib"
         defines { "DYNAMIC_LIBRARY" }
         targetdir "bin/build/bin"
         staticruntime "Off"
+        symbols "Off"
         objdir "bin/obj/dll"
-        symbolspath "bin/build/dll/symbols"
         
     filter "configurations:Static Library Debug"
         kind "StaticLib"
         defines { "STATIC_LIBRARY_DEBUG" }
-        symbols "On"
+        symbols "Off"
         targetextension "-d.lib"
         targetdir "bin/build/lib"
         staticruntime "On"
         objdir "bin/obj/lib-d"
-        symbolspath "bin/build/lib/symbols"
         
     filter "configurations:Static Library"
         kind "StaticLib"
@@ -55,8 +53,8 @@ project (name)
         staticruntime "On"
         targetextension ".lib"
         targetdir "bin/build/lib"
-        symbolspath "bin/build/lib/symbols"
         objdir "bin/obj/lib"
+        symbols "Off"
 
     filter "platforms:Win32"
         architecture "x86"
@@ -82,7 +80,7 @@ project "example"
         defines { "EXAMPLE" }
         targetdir "bin/Example/"
         objdir "bin/obj/example"
-        staticruntime "Off"
+        staticruntime "On"
 
     filter "configurations:Dynamic Library"
         kind "SharedLib"
@@ -94,11 +92,11 @@ project "example"
     filter "configurations:Static Library Debug"
         kind "StaticLib"
         defines { "STATIC_LIBRARY_DEBUG" }
-        symbols "On"
         targetextension "-d.lib"
         targetdir "bin/build/lib"
         staticruntime "On"
         objdir "bin/obj/lib-d"
+        symbols "Off"
         
     filter "configurations:Static Library"
         kind "StaticLib"
@@ -107,6 +105,7 @@ project "example"
         targetextension ".lib"
         targetdir "bin/build/lib"
         objdir "bin/obj/lib"
+        symbols "Off"
 
     filter "platforms:Win32"
         architecture "x86"
