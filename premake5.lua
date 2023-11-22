@@ -2,10 +2,11 @@ local name = path.getbasename(os.getcwd())
 local directory = os.getcwd()
 
 -- Create directories
-os.execute("mkdir " .. name)
+os.execute("mv \"" .. directory .. "/project" .. "\" \"" .. directory .. "/" .. name .. "\"")
+os.execute("mkdir \"" .. name .. "\"")
 os.execute("mkdir \"" .. directory .. "/" .. name .. "/includes\"")
 os.execute("mkdir \"" .. directory .. "/" .. name .. "/src\"")
-os.execute("mkdir " .. "vendor")
+os.execute("mkdir vendor")
 
 
 workspace (name)
@@ -21,10 +22,13 @@ project (name)
     characterset "Unicode"
     
     filter "configurations:Example"
-        defines { "EXAMPLE" }
-        targetdir "bin/Example/"
-        objdir "bin/obj/example"
-        staticruntime "Off"
+        kind "StaticLib"
+        defines { "STATIC_LIBRARY_DEBUG" }
+        symbols "On"
+        targetextension "-d.lib"
+        targetdir "bin/build/lib"
+        staticruntime "On"
+        objdir "bin/obj/lib-d"
 
     filter "configurations:Dynamic Library"
         kind "SharedLib"
@@ -59,7 +63,7 @@ project (name)
     filter {} -- reset filter
 
     includedirs { name .. "/includes", "include" } -- Add "include" directory
-    files { name .. "**/*.rc", name .. "**/*.h", name .. "**/*.cpp", "src/**.h", "src/**.cpp" } -- Add "src" directory
+    files { name .. "/**/*.rc", name .. "/**/*.h", name .. "/**/*.cpp", "**/src/**.h", "**/src/**.cpp" } -- Add "src" directory
 
 project "example"
     location "example"
@@ -107,5 +111,5 @@ project "example"
         architecture "x86_64"
         
     filter {} -- reset filter
-    files { "example/**/*.rc", "example/**/*.h", "example/**/*.cpp" }
+    files { "example/main.cpp" }
     includedirs { name .. "/includes", "include" } -- Add "include" directory
