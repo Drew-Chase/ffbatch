@@ -24,11 +24,12 @@ project (name)
     filter "configurations:Example"
         kind "StaticLib"
         defines { "STATIC_LIBRARY_DEBUG" }
-        symbols "On"
+        symbols "Off"
         targetextension "-d.lib"
-        targetdir "bin/build/lib"
+        targetdir "bin/example/lib"
+        symbolspath "bin/example/lib/symbols"
         staticruntime "On"
-        objdir "bin/obj/lib-d"
+        objdir "bin/obj/example-d"
 
     filter "configurations:Dynamic Library"
         kind "SharedLib"
@@ -36,6 +37,7 @@ project (name)
         targetdir "bin/build/bin"
         staticruntime "Off"
         objdir "bin/obj/dll"
+        symbolspath "bin/build/dll/symbols"
         
     filter "configurations:Static Library Debug"
         kind "StaticLib"
@@ -45,6 +47,7 @@ project (name)
         targetdir "bin/build/lib"
         staticruntime "On"
         objdir "bin/obj/lib-d"
+        symbolspath "bin/build/lib/symbols"
         
     filter "configurations:Static Library"
         kind "StaticLib"
@@ -52,6 +55,7 @@ project (name)
         staticruntime "On"
         targetextension ".lib"
         targetdir "bin/build/lib"
+        symbolspath "bin/build/lib/symbols"
         objdir "bin/obj/lib"
 
     filter "platforms:Win32"
