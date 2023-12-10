@@ -1,5 +1,5 @@
-# C++ Library Template Project
-This is a C++ template project for creating static and dynamic libraries (.lib and .dll files)
+# C++ CLI Template Project
+This is a C++ template project for creating console applications
 ## Getting Started
 run the respective script file in the [scripts](/scripts) directory
 ### Windows

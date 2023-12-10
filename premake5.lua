@@ -1,118 +1,103 @@
+-- Get the base name of the current working directory
 local name = path.getbasename(os.getcwd())
+
+-- Get the current working directory
 local directory = os.getcwd()
 
--- Create directories
+-- Rename the "project" directory to the base name of the current working directory
 os.execute("mv \"" .. directory .. "/project" .. "\" \"" .. directory .. "/" .. name .. "\"")
+
+-- Create a new directory with the base name of the current working directory
 os.execute("mkdir \"" .. name .. "\"")
+
+-- Create a "includes" subdirectory under the new directory
 os.execute("mkdir \"" .. directory .. "/" .. name .. "/includes\"")
+
+-- Create a "src" subdirectory under the new directory
 os.execute("mkdir \"" .. directory .. "/" .. name .. "/src\"")
+
+-- Create a "vendor" directory in the current working directory
 os.execute("mkdir vendor")
 
-
+-- Define a workspace with the base name of the current working directory
 workspace (name)
-    configurations { "Example", "Dynamic Library", "Static Library Debug", "Static Library" }
-    platforms { "Win32", "x64" }
 
+-- Define the configurations for the workspace
+configurations { "Shared", "Shared (Debug)", "Static (Debug)", "Static" }
+
+-- Define the platforms for the workspace
+platforms { "x86", "x64" }
+
+-- Define a project with the base name of the current working directory
 project (name)
-    location (name)
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "C++20"
-    cdialect "C17"
-    characterset "Unicode"
-    
-    filter "configurations:Example"
-        kind "StaticLib"
-        defines { "STATIC_LIBRARY_DEBUG" }
-        targetextension "-d.lib"
-        targetdir "bin/example/lib"
-        staticruntime "On"
-        objdir "bin/obj/example-d"
-        symbols "Off"
 
-    filter "configurations:Dynamic Library"
-        kind "SharedLib"
-        defines { "DYNAMIC_LIBRARY" }
-        targetdir "bin/build/bin"
-        staticruntime "Off"
-        symbols "Off"
-        objdir "bin/obj/dll"
-        
-    filter "configurations:Static Library Debug"
-        kind "StaticLib"
-        defines { "STATIC_LIBRARY_DEBUG" }
-        symbols "Off"
-        targetextension "-d.lib"
-        targetdir "bin/build/lib"
-        staticruntime "On"
-        objdir "bin/obj/lib-d"
-        
-    filter "configurations:Static Library"
-        kind "StaticLib"
-        defines { "STATIC_LIBRARY" }
-        staticruntime "On"
-        targetextension ".lib"
-        targetdir "bin/build/lib"
-        objdir "bin/obj/lib"
-        symbols "Off"
+-- Set the location of the project
+location (name)
 
-    filter "platforms:Win32"
-        architecture "x86"
+-- Set the type of the project to a console application
+kind "ConsoleApp"
 
-    filter "platforms:x64"
-        architecture "x86_64"
+-- Set the language of the project to C++
+language "C++"
 
-    filter {} -- reset filter
+-- Set the C++ dialect of the project to C++20
+cppdialect "C++20"
 
-    includedirs { name .. "/includes", "include" } -- Add "include" directory
-    files { name .. "/**/*.rc", name .. "/**/*.h", name .. "/**/*.cpp", "**/src/**.h", "**/src/**.cpp" } -- Add "src" directory
+-- Set the C dialect of the project to C17
+cdialect "C17"
 
-project "example"
-    location "example"
-    kind "ConsoleApp"
-    language "C++"
-    cppdialect "C++20"
-    cdialect "C17"
-    links { name }
+-- Set the character set of the project to Unicode
+characterset "Unicode"
 
-    characterset "Unicode"
-    filter "configurations:Example"
-        defines { "EXAMPLE" }
-        targetdir "bin/Example/"
-        objdir "bin/obj/example"
-        staticruntime "On"
+-- Sets the opimization level of the project to "Full"
+optimize "Full"
 
-    filter "configurations:Dynamic Library"
-        kind "SharedLib"
-        defines { "DYNAMIC_LIBRARY" }
-        targetdir "bin/build/bin"
-        staticruntime "Off"
-        objdir "bin/obj/dll"
-        
-    filter "configurations:Static Library Debug"
-        kind "StaticLib"
-        defines { "STATIC_LIBRARY_DEBUG" }
-        targetextension "-d.lib"
-        targetdir "bin/build/lib"
-        staticruntime "On"
-        objdir "bin/obj/lib-d"
-        symbols "Off"
-        
-    filter "configurations:Static Library"
-        kind "StaticLib"
-        defines { "STATIC_LIBRARY" }
-        staticruntime "On"
-        targetextension ".lib"
-        targetdir "bin/build/lib"
-        objdir "bin/obj/lib"
-        symbols "Off"
+-- Define the settings for the "Dynamic Library" configuration
+filter "configurations:Shared (Debug)"
+    defines { "DYNAMIC_LIBRARY" }
+    targetdir "bin/debug/shared"
+    staticruntime "Off"
+    symbols "On"
+    objdir "bin/obj/debug/dll"
 
-    filter "platforms:Win32"
-        architecture "x86"
+-- Define the settings for the "Dynamic Library" configuration
+filter "configurations:Shared"
+    defines { "DYNAMIC_LIBRARY" }
+    targetdir "bin/release/shared"
+    staticruntime "Off"
+    symbols "Off"
+    objdir "bin/obj/release/dll"
 
-    filter "platforms:x64"
-        architecture "x86_64"
-        
-    filter {} -- reset filter
-    files { "example/main.cpp" }
-    includedirs { name .. "/includes", "include" } -- Add "include" directory
+-- Define the settings for the "Static Library Debug" configuration
+filter "configurations:Static (Debug)"
+    defines { "STATIC_LIBRARY_DEBUG" }
+    symbols "Off"
+    targetdir "bin/debug/static"
+    staticruntime "On"
+    objdir "bin/obj/debug/lib-d"
+
+-- Define the settings for the "Static Library" configuration
+filter "configurations:Static"
+    defines { "STATIC_LIBRARY" }
+    staticruntime "On"
+    targetdir "bin/release/static"
+    objdir "bin/obj/release/lib"
+    symbols "Off"
+
+-- Define the architecture for the "Win32" platform
+filter "platforms:x86"
+    architecture "x86"
+    targetname (name .. "-x86")
+
+-- Define the architecture for the "x64" platform
+filter "platforms:x64"
+    architecture "x86_64"
+
+-- Reset the filter
+filter {}
+
+-- Define the include directories for the project
+includedirs { name .. "/includes", "include" }
+
+-- Define the files to be included in the project
+files { name .. "/**/*.rc", name .. "/**/*.h", name .. "/**/*.cpp", "**/src/**.h", "**/src/**.cpp" }
