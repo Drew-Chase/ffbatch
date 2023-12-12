@@ -4,6 +4,7 @@
 #include <iostream>
 #include <regex>
 using std::filesystem::directory_iterator;
+using namespace ffbatch;
 
 void FileSystem::Parse(string& path, bool& recursive, vector<string>& extensions)
 {
@@ -68,4 +69,22 @@ vector<string> FileSystem::GenerateCommands(string command, vector<string> input
 	}
 
 	return commands;
+}
+
+bool FileSystem::GetFFmpegExecutable(string& path)
+{
+	for (const auto& entry : directory_iterator(path))
+	{
+		if (entry.is_regular_file())
+		{
+			auto filename = entry.path().filename().string();
+			if (strcmp(filename.c_str(), "ffmpeg.exe") == 0)
+			{
+				path = entry.path().string();
+				return true;
+			}
+		}
+	}
+
+	return system("where.exe ffmpeg.exe > nul 1>&2") == 0;
 }
