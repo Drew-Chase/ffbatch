@@ -1,11 +1,23 @@
 // LFInteractive LLC. (c) 2020-2024 All Rights Reserved
 #include <iostream>
 #include <vector>
-#include "../FileSystem.h"
+#include <filesystem>
+#include <string>
+
+#include "System.h"
+#include "FileSystem.h"
+
+using std::vector;
+using std::string;
+using std::filesystem::current_path;
+using std::filesystem::path;
+using ffbatch::FileSystem;
+
+
 int main(int argc, char** argv)
 {
-	int code = system("where.exe ffmpeg > nul 2>&1");
-	if (code != 0)
+	string executing_path = path(argv[0]).parent_path().string();
+	if (!FileSystem::GetFFmpegExecutable(executing_path))
 	{
 		std::cerr << "ffmpeg.exe not found!" << std::endl;
 	}
@@ -16,10 +28,11 @@ int main(int argc, char** argv)
 		string command;
 		for (int i = 1; i < argc; i++)
 		{
-			string arg = argv[i];
+			char* arg = argv[i];
 			command += arg;
+			command += " ";
 			args.emplace_back(arg);
-			if (arg == "-i")
+			if (strcmp(arg, "-i") == 0 && i != argc - 1)
 			{
 				input = argv[i + 1];
 			}
