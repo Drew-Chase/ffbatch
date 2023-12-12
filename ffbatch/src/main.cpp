@@ -17,9 +17,10 @@ using ffbatch::FileSystem;
 int main(int argc, char** argv)
 {
 	string executing_path = path(argv[0]).parent_path().string();
-	if (!FileSystem::GetFFmpegExecutable(executing_path))
+	if (false && !FileSystem::GetFFmpegExecutable(executing_path))
 	{
 		std::cerr << "ffmpeg.exe not found!" << std::endl;
+		return 1;
 	}
 	else
 	{
@@ -37,6 +38,15 @@ int main(int argc, char** argv)
 				input = argv[i + 1];
 			}
 		}
+
+		if (input.empty())
+		{
+			std::cerr << "No Input was found!" << std::endl;
+
+			return 1;
+		}
+
+
 
 		bool recursive = false;
 		std::vector<std::string> extensions;
