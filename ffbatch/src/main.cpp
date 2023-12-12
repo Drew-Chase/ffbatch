@@ -17,7 +17,7 @@ using ffbatch::FileSystem;
 int main(int argc, char** argv)
 {
 	string executing_path = path(argv[0]).parent_path().string();
-	if (false && !FileSystem::GetFFmpegExecutable(executing_path))
+	if (!FileSystem::GetFFmpegExecutable(executing_path))
 	{
 		std::cerr << "ffmpeg.exe not found!" << std::endl;
 		return 1;
