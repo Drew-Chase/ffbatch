@@ -56,11 +56,11 @@ vector<string> FileSystem::GetFilesInDirectory(string directory, vector<string> 
 	return files;
 }
 
-vector<string> FileSystem::GenerateCommands(string command, vector<string> inputs, vector<string> args)
+vector<string> FileSystem::GenerateCommands(string command, vector<string> files, vector<string> args)
 {
 	vector<string> commands;
 
-	for (const string& input : inputs)
+	for (const string& input : files)
 	{
 		string cmd = command;
 		cmd = std::regex_replace(cmd, std::regex("\\$input"), input);
