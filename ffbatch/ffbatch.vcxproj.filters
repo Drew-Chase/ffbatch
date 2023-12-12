@@ -15,9 +15,15 @@
     <ClCompile Include="src\FileSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\System.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileSystem.h">
+      <Filter>includes</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\System.h">
       <Filter>includes</Filter>
     </ClInclude>
   </ItemGroup>
