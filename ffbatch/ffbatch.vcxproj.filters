@@ -20,11 +20,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileSystem.h">
-      <Filter>includes</Filter>
-    </ClInclude>
     <ClInclude Include="includes\System.h">
       <Filter>includes</Filter>
     </ClInclude>
+    <ClInclude Include="includes\FileSystem.h" />
   </ItemGroup>
 </Project>

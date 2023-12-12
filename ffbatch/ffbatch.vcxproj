@@ -371,7 +371,7 @@
     <ClCompile Include="src\System.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="includes\FileSystem.h" />
     <ClInclude Include="includes\System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
