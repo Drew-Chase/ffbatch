@@ -56,15 +56,56 @@ vector<string> FileSystem::GetFilesInDirectory(string directory, vector<string> 
 	return files;
 }
 
-vector<string> FileSystem::GenerateCommands(string command, vector<string> files, vector<string> args)
+vector<string> FileSystem::GenerateCommands(string command, vector<string> files, vector<string> args, string input_string)
 {
 	vector<string> commands;
 
 	for (const string& input : files)
 	{
 		string cmd = command;
-		cmd = std::regex_replace(cmd, std::regex("\\$input"), input);
-		cmd = std::regex_replace(cmd, std::regex("\\$output"), input.substr(0, input.length() - 4) + "_out.mp4");
+		std::filesystem::path file(input);
+		string filename = file.filename().string();
+		string extension = file.extension().string();
+
+		string search_string = input_string;
+		size_t pos = cmd.find(search_string);
+		while (pos != std::string::npos)
+		{
+			cmd = cmd.replace(pos, search_string.length(), "\"" + input + "\"");
+			pos = cmd.find(search_string);
+		}
+
+		search_string = "%FILEPATH%";
+		pos = cmd.find(search_string);
+		while (pos != std::string::npos)
+		{
+			cmd = cmd.replace(pos, search_string.length(), file.parent_path().string());
+			pos = cmd.find(search_string);
+		}
+
+		pos = filename.find(extension);
+		while (pos != std::string::npos)
+		{
+			filename = filename.erase(pos, extension.length());
+			pos = filename.find(extension);
+		}
+
+		search_string = "%FILENAME%";
+		pos = cmd.find(search_string);
+		while (pos != std::string::npos)
+		{
+			cmd = cmd.replace(pos, search_string.length(), filename + "_tmp");
+			pos = cmd.find(search_string);
+		}
+
+		search_string = "%FILEEXTENSION%";
+		pos = cmd.find(search_string);
+		while (pos != std::string::npos)
+		{
+			cmd = cmd.replace(pos, search_string.length(), file.extension().string());
+			pos = cmd.find(search_string);
+		}
+
 		commands.push_back(cmd);
 	}
 
@@ -86,5 +127,5 @@ bool FileSystem::GetFFmpegExecutable(string& path)
 		}
 	}
 
-	return system("where.exe ffmpeg.exe > nul 1>&2") == 0;
+	return system("where.exe ffmpeg.exe > nul 2>&1") == 0;
 }
