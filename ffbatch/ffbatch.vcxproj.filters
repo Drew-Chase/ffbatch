@@ -24,5 +24,6 @@
       <Filter>includes</Filter>
     </ClInclude>
     <ClInclude Include="includes\FileSystem.h" />
+    <ClInclude Include="includes\ProcessedFile.h" />
   </ItemGroup>
 </Project>
